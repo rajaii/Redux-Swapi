@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import { fetchPic } from '../actions/index';
 import { CharacterList } from "../components";
+import Spinner from 'react-spinner-material';
 // import actions
 
 class CharacterListView extends React.Component {
@@ -10,12 +11,12 @@ class CharacterListView extends React.Component {
   }
 
   componentDidMount() {
-    // call our action
+    this.props.fetchPic();
   }
 
   render() {
     if (this.props.fetching) {
-      // return something here to indicate that you are fetching data
+      return <Spinner size={400} spinnerColor={"#0000FF"} spinnerWidth={10} visible={true} />
     }
     return (
       <div className="CharactersList_wrapper">
@@ -27,9 +28,9 @@ class CharacterListView extends React.Component {
 
 // our mapStateToProps needs to have two properties inherited from state
 // the characters and the fetching boolean
-export default connect(
-  null /* mapStateToProps replaces null here */,
-  {
-    /* action creators go here */
-  }
-)(CharacterListView);
+
+const mapStateToProps = (state) => ({
+characters: state.characters,
+fetching: state.fetching
+})
+export default connect(mapStateToProps, { fetchPic })(CharacterListView);
